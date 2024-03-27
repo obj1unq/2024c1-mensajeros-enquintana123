@@ -1,0 +1,106 @@
+import mensajero.*
+
+describe "Casos de prueba." {
+
+	test "1. El paquete de George que no está pago no puede ser llevado por Neo a la matrix" {
+		paquete.pagado(false)
+		paquete.mensajero(neo)
+		paquete.destino(matrix)
+		assert.equals(false, paquete.puedeLLevarse())
+	
+	}
+	test "2. El paquete de George que sí está pago puede ser llevado por Chuck a la matrix" {
+		paquete.pagado(true)
+		paquete.mensajero(norris)
+		paquete.destino(matrix)
+		assert.equals(true, paquete.puedeLLevarse())
+	}
+	
+	test "3. El paquete de George que sí está pago no puede ser llevado por Lincoln Hawk (80kg)  a Brooklyn si es que utiliza un camión con un acoplado ." {
+		paquete.pagado(true)
+		hawk.pesoPropio(80)
+		hawk.vehiculo(camion)
+		camion.acoplados(1)
+		paquete.mensajero(hawk)
+		paquete.destino(brooklyn)
+		assert.equals(false, paquete.puedeLLevarse())
+	}
+	
+	test "4. La entrega anterior puede hacerse si Lincoln Hawk usa una bicicleta" {
+		paquete.pagado(true)
+		hawk.pesoPropio(80)
+		hawk.vehiculo(bicicleta)
+		paquete.mensajero(hawk)
+		paquete.destino(brooklyn)
+		assert.equals(true, paquete.puedeLLevarse())
+	}
+}
+
+describe "Peso camion" {
+	test "peso camion sin acoplado: 500" {
+		camion.acoplados(0)
+		assert.equals(500, camion.peso())
+	}
+	test "peso camion con 1 acoplado: 1000" {
+		camion.acoplados(1)
+		assert.equals(1000, camion.peso())
+	}
+}
+
+describe "Llamadas de chuck norris" {
+	test "puede llamar cuando tiene credito" {
+		neo.tieneCredito(true)
+		assert.equals(true, neo.puedeLLamar())
+	}
+	
+	test "NO puede llamar cuando no tiene credito" {
+		
+		neo.tieneCredito(false)
+		assert.equals(false, neo.puedeLLamar())
+	}
+	
+}
+
+describe "peso de hawk" {
+	test "peso de hawk con peso propio 90 y va en bicicleta" {
+		hawk.pesoPropio(90)
+		hawk.vehiculo(bicicleta)
+		assert.equals(100, hawk.peso())
+	}
+	
+	test "peso de hawk con peso propio 90 y va en camion con 1 acoplado" {
+		hawk.pesoPropio(90)
+		camion.acoplados(1)
+		hawk.vehiculo(camion)
+		assert.equals(1090, hawk.peso())
+	}
+}
+
+describe "Puente brooklyn" {
+	test "hawk en bicicleta pasa" {
+		hawk.pesoPropio(90)
+		hawk.vehiculo(bicicleta)
+		paquete.destino(brooklyn)
+		paquete.mensajero(hawk)
+		assert.equals(true, paquete.puedeLLevarse())
+		
+	}
+	
+	test "hawk en camion con 1 acolpado no pasa" {
+		hawk.pesoPropio(90)
+		camion.acoplados(1)
+		hawk.vehiculo(camion)
+		paquete.destino(brooklyn)
+		paquete.mensajero(hawk)
+		assert.equals(false, paquete.puedeLLevarse())
+	}
+	
+		
+}
+
+describe "Paquete" {
+	test "paquete no pago" {
+		paquete.pagado(false)
+		assert.equals(false, paquete.pagado())
+	}
+}
